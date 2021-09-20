@@ -9,6 +9,7 @@ jobs:
           docker build . -t image-ci-cd
           docker run -p 41976:8080 -d image-ci-cd
           sleep 2
+      - run: |
           curl -I http://localhost:41976/ |grep "200 OK"
   publish:
     machine:
@@ -17,7 +18,9 @@ jobs:
       - checkout
       - run: |
           docker login --username $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: |
           docker build . -t $DOCKER_LOGIN/image-ci-cd
+      - run: |
           docker image push $DOCKER_LOGIN/image-ci-cd          
 workflows:
   my-workflow:
