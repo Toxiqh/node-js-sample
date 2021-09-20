@@ -1,9 +1,4 @@
 version: 2.1
-executors:
-  my-custom-executor:
-    docker:
-      - image: cimg/node:10.19.0
-
 jobs:
   build:
     machine: 
@@ -13,6 +8,7 @@ jobs:
       - run: |
           docker build . -t image-ci-cd
           docker run -p 41976:8080 -d image-ci-cd
+          sleep 2
           curl -I http://localhost:41976/ |grep "200 OK"
           
 workflows:
