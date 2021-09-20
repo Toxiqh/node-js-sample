@@ -6,12 +6,15 @@ executors:
 
 jobs:
   build:
-    executor: my-custom-executor
+    machine: 
+      image: ubuntu:latest
     steps:
       - checkout
       - run: |
-          npm install
-          npm build
+          docker build . -t image-ci-cd
+          docker run -p 41976:8080 -d image-ci-cd
+          curl -I http://localhost:41976/ |grep "200 OK"
+          
 workflows:
   my-custom-workflow:
     jobs:
