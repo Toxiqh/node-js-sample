@@ -10,7 +10,15 @@ jobs:
           docker run -p 41976:8080 -d image-ci-cd
           sleep 2
           curl -I http://localhost:41976/ |grep "200 OK"
-          
+  publish:
+    machine:
+      image: ubuntu-2004:202107-02
+    steps:
+      - checkout
+      - run: |
+          docker login --username $DOCKER_LOGIN -p $DOCKER_PASSWORD
+          docker build . -t $DOCKER_LOGIN/image-ci-cd
+          docker image push $DOCKER_LOGIN/image-ci-cd          
 workflows:
   my-custom-workflow:
     jobs:
