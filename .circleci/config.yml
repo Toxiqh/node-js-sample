@@ -20,7 +20,9 @@ jobs:
           docker build . -t $DOCKER_LOGIN/image-ci-cd
           docker image push $DOCKER_LOGIN/image-ci-cd          
 workflows:
-  my-custom-workflow:
+  my-workflow:
     jobs:
       - build
-      - publish
+      - publish: 
+          requires:
+            - build
